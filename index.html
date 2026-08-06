@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Which Beardson Alter Ego Are You?</title>
+    
+    <!-- Dynamic Twitter Card Meta Tags for Link Previews -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="meta-title" content="Which Beardson Alter Ego Are You?">
+    <meta name="twitter:description" id="meta-desc" content="Take the quiz to find out your Jimboverse alter ego and personality breakdown!">
+    <meta name="twitter:image" id="meta-image" content="https://static.wikia.nocookie.net/jimboverse/images/2/24/Sexson_Patly.png/revision/latest?cb=20260423223453">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .intro-text {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        .choice-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+        .choice-btn:hover {
+            background: #e0e6ed;
+            border-color: #bdc3c7;
+        }
+        #quiz-container, #result-container {
+            display: none;
+        }
+        .progress {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .result-image {
+            max-width: 250px;
+            width: 100%;
+            border-radius: 12px;
+            margin: 0 auto 20px auto;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            object-fit: cover;
+        }
+        
+        /* Hex Graph Styling */
+        .hex-graph-wrapper {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            margin: 30px auto;
+        }
+        .hex-corner-avatar {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #333;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transform: translate(-50%, -50%);
+            background: #fff;
+        }
+
+        .share-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        .download-card-btn {
+            background: #27ae60;
+            color: #fff;
+            font-size: 18px;
+            padding: 14px 28px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+        }
+        .download-card-btn:hover {
+            background: #219653;
+        }
+        .share-btn {
+            background: #000;
+            color: #fff;
+            width: fit-content;
+        }
+        .share-btn:hover {
+            background: #333;
+        }
+        #share-status {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #e67e22;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="start-container">
+    <h1>The Jimboverse Alter Ego Test</h1>
+    <p class="intro-text">Navigate the chaotic scenarios of the Jimboverse to discover which Beardson Alter Ego truly matches your personality.</p>
+    <div style="text-align: center;">
+        <button class="btn" onclick="startQuiz()">Start Test</button>
+    </div>
+</div>
+
+<div class="container" id="quiz-container">
+    <div class="progress" id="progress-text">Question 1 / 20</div>
+    <h3 id="question-text">Question text goes here</h3>
+    <div id="choices-container">
+        <!-- Buttons injected here via JS -->
+    </div>
+</div>
+
+<div class="container" id="result-container">
+    <div class="result-header">
+        <img id="result-image" class="result-image" src="" alt="Result Image">
+        <h1 id="result-title">Your Beardson Alter Ego is: ...</h1>
+    </div>
+    
+    <h3>Who they are</h3>
+    <p id="result-who"></p>
+    
+    <h3>Why you are like them</h3>
+    <p id="result-why"></p>
+
+    <h3>Your Personality Breakdown</h3>
+    <div class="hex-graph-wrapper" id="hex-graph-container">
+        <!-- SVG and Corner Avatars injected dynamically -->
+    </div>
+
+    <div class="share-actions">
+        <button class="btn download-card-btn" onclick="downloadResultCard()">💾 Download My Alter Ego Card!</button>
+        <button class="btn share-btn" onclick="shareOnX()">𝕏 Share Result on X</button>
+    </div>
+    <div id="share-status"></div>
+</div>
+
+<!-- Hidden Canvas for generating the dynamic composite result image -->
+<canvas id="share-canvas" width="800" height="480" style="display:none;"></canvas>
+
+<script>
+// --- DATA STRUCTURES ---
+
+const points = {
+    Razorbeard: 0,
+    Beardson: 0,
+    Beardshy: 0,
+    Chillson: 0,
+    Beardlee: 0,
+    Sexson: 0
+};
+
+const personaColors = {
+    Razorbeard: "#2ecc71", 
+    Beardson: "#e74c3c",   
+    Beardshy: "#ff69b4",   
+    Chillson: "#3498db",   
+    Beardlee: "#f1c40f",   
+    Sexson: "#e67e22"      
+};
+
+const resultsData = {
+    "Sexson": {
+        image: "https://static.wikia.nocookie.net/jimboverse/images/2/24/Sexson_Patly.png/revision/latest?cb=20260423223453",
+        who: "Sexson Patly is a degenerate, gooning sexpat who completely abandoned a conventional lifestyle for the red-light districts of Southeast Asia. Known as Traveler Beardson, he's the weird sex guy who constantly obsesses over \"Megamastia\" and cheap tropical living while sporting loud Hawaiian shirts and a deep tourist tan. He solves literally every problem by either fucking, fleeing the country, or pulling up a webcam model.",
+        why: "You prioritize your personal pleasure and adventurous escapism far above traditional societal expectations. Your friends know you as the sex weirdo. When faced with high-stress situations, tedious drama, or heavy responsibilities, your immediate instinct is to simply pack your bags, hit the road, and find a more liberating environment. You possess a highly pragmatic, if utterly shameless, approach to problem-solving, viewing everything through the lens of how it benefits your immediate desires. You are unapologetically yourself, even if others find your lifestyle highly unconventional or deeply degenerate."
+    },
+    "Chillson": {
+        image: "https://static.wikia.nocookie.net/jimboverse/images/c/c8/Chillson_Chilly.jpg/revision/latest?cb=20260423225853",
+        who: "Chillson Chilly is the ultra-relaxed, surfer-bro variant who permanently rides the \"waves of based energy\" through the culture war. Perpetually shirtless with a sun-faded trucker hat, he speaks in a slow California drawl and effortlessly diffuses high-energy chaos with pure stoner-gamer zen. He completely ignores drama and existential threats, preferring to just hang loose and vibe.",
+        why: "You are incredibly easy to approach and hang out with, maintaining a detached perspective that keeps you insulated from unnecessary worry or panic. Your default reaction to conflict, petty drama, or overwhelming pressure is simply to zone out, walk away, or let things resolve organically without your intervention. While your laid-back temperament makes you a highly pleasant and stabilizing companion, your extreme chillness can sometimes border on evasiveness, leading you to ignore pressing problems rather than confronting them head-on."
+    },
+    "Beardson": {
+        image: "https://static.wikia.nocookie.net/jimboverse/images/6/67/Beardson.jpg/revision/latest?cb=20260806182047",
+        who: "Beardson Beardly is the grounded, highly traditional anchor of the Millennial Faction and the longtime manager of the GameStop at the Paducah Mall in Kentucky. As a battle-hardened veteran of the Blood Gulch campaign, he possesses a disciplined, no-nonsense mindset that fuels his fierce culture war commentary on ethics in games journalism, Gamergate, and anti-feminist literature. He effortlessly switches between his many iconic personas, frequently channeling the aggressive \"Bulldog\" to enforce order and shame degeneracy, or ascending to \"Beardgod\" to deliver all-knowing, based gaming wisdom. Alongside his co-host Wurzelroot on the high-intensity Weekly Sweat Stream, he delivers sweat-drenched rants against modern video game trends while defending retro gaming preservation.",
+        why: "You are a deeply principled individual who firmly stands their ground and never backs down from a confrontation when your core values are challenged. While not always perfect or flawlessly competent, you possess a unique set of quirks and a commanding presence that naturally draws people in. You prefer to tackle problems head-on, demanding respect, discipline, and order in your environment. Your temperament is highly loyal and traditional, but you aren't afraid to unleash a fiery, stubborn streak when dealing with blatant incompetence or disrespect."
+    },
+    "Razorbeard": {
+        image: "https://static.wikia.nocookie.net/jimboverse/images/6/6c/Razorbeard2.png/revision/latest?cb=20260806182227",
+        who: "Razorbeard is a violently chaotic, Islamic punk-rock alter ego born from Beardson's severe Dissociative Identity Disorder, operating as a wildly erratic provocateur who wages a holy war against the \"Epstein Regime\". He is a completely unhinged battering ram of a man who hosts militant Saturday night punk concerts with songs like \"Allahu Akbar (Punk Version)\", constantly praises Allah, and heavily features a provocative statue of Aisha in his streams. Clad in keffiyeh-inspired attire, he balances his explosive public freakouts with extreme, raw sexual dominance. He is the founder of Paducah Islam, most infamous for his intense, on-and-off \"Raw Paducah Marriage\" with the submissive feminine streamer Sneako, enforcing strict traditional wifely duties upon him. He represents a completely transgressive, destabilizing force that entirely rejects conservative Christian nationalism in favor of apocalyptic political language and militant religious aesthetics.",
+        why: "You are widely known as the crazy freak in your friend group. You operate on absolute extremes, possessing a fiery, rebellious temperament that completely rejects polite societal norms and expectations. When faced with stress or opposition, you don't just push back, you explode, leveraging pure shock value, aggression, violence, sex and intimidation to assert control. Beneath the volatile, freakish exterior is a deeply passionate, almost spiritual drive that makes you entirely unpredictable, dangerous to your enemies, and impossible to ignore."
+    },
+    "Beardlee": {
+        image: "https://static.wikia.nocookie.net/jimboverse/images/2/2c/Beard-Lee2.webp/revision/latest?cb=20260806182210",
+        who: "Beard-Lee is the manipulative, 57-year-old Chinese patriarch of Paducah Chinatown and owner of the Lucky Pawn & Curios. He is a ruthlessly pragmatic and calculating opportunist who views every interaction, crisis, or relationship purely as a way to extract leverage, wealth, or spiritual \"qi.\" He hates Western constraints and Japanese media, exclusively praising Chinese superiority and gacha games.",
+        why: "You are highly analytical, always operating three steps ahead of everyone else in the room. Your temperament is defined by a cold, calculated pragmatism; you rarely react emotionally to emergencies, instead looking for the most profitable or advantageous loophole in the chaos. While some might view your methods as slightly unethical or deeply self-serving, you simply understand the \"game theory\" of life better than they do. You are a master at masking your true intentions, perfectly willing to play the polite diplomat until it's time to cash in."
+    },
+    "Beardshy": {
+        image: "https://static.wikia.nocookie.net/jimboverse/images/3/3d/Beardshy.png/revision/latest?cb=20260416223902",
+        who: "Beardshy is the socially anxious, deeply submissive, and heavily flustered variant who exists primarily to get bullied and dominated by louder personalities. With a hunched posture, a slightly uneven beard, second-hand flannel, and canvas mutual-aid tote bags, he constantly worries about being problematic and insists on awkwardly reminding everyone that they are on stolen land. He blurts out half-remembered Reddit catchphrases like \"bold of you to assume\" or \"sir, this is a Wendy's\" at the worst possible moments. As the live-in boyfriend of a mixed-race girl named Jaylin, he softly refers to himself as \"Daddy\" and is constantly in a state of sheer panic that she might overhear him. Whenever he streams to make money by roleplaying a racist grifter, he breaks character to frantically whisper into the mic, repeatedly apologizing to Jaylin and assuring her that her \"Black is beautiful\" and that he's only doing it for the donations.",
+        why: "You possess a highly sensitive and timid temperament, constantly second-guessing your own actions to avoid offending anyone or causing a scene. In high-pressure situations, your immediate instinct is to hide, apologize profusely, or submit to the strongest person in the room. You are deeply self-aware—sometimes to a crippling fault—and carry a lot of nervous energy that manifests in awkward social crutches. Despite the overwhelming anxiety and fear of confrontation, you genuinely want to be a supportive, caring person to those around you."
+    }
+};
+
+const questions = [
+    {
+        q: "An unexpected emergency breaks out at the Paducah Mall GameStop when Dan Bilzerian suddenly storms in to hold an unannounced, live-action paintball tournament. How do you respond to the crossfire?",
+        a: [
+            { t: "I'd confront him competently to shame him out of the establishment, rallying the employees or using physical force if necessary.", s: { Beardson: 1 } },
+            { t: "Join the paintball tournament just to ignore the rules and keep shooting him in the nuts while laughing maniacally.", s: { Razorbeard: 1 } },
+            { t: "This stress is way too much and too dangerous for me to handle; I'd hide somewhere, hoping the situation resolves itself.", s: { Beardshy: 1 } },
+            { t: "I'd just watch him do it, maybe joining in for a few rounds.", s: { Chillson: 1 } },
+            { t: "I'd let him smash the place, then sue him for damages and pad the bill, the fool won't even notice.", s: { Beardlee: 1 } },
+            { t: "Take this as a final sign to quit retail, pack my bags, and book a one-way ticket to somewhere with a way cheaper cost of living.", s: { Sexson: 1 } }
+        ]
+    },
+    {
+        q: "A massive crowd of rabid customers floods the Paducah Mall GameStop, violently demanding the very last retro PlayStation 2 copy right as the store's cash registers completely crash. How do you handle the pressure?",
+        a: [
+            { t: "Lock the front doors, stand my ground behind the counter, and loudly demand some basic discipline and respect for the establishment and retro gaming history.", s: { Beardson: 1 } },
+            { t: "Calmly announce that the system is down, then quietly pull the game aside and offer it to whichever customer happens to have the most physical cash on hand.", s: { Beardlee: 1 } },
+            { t: "Jump onto the counter, smash the game to pieces in front of everyone, and yell at them for being mindless slaves to corporate consumerism; they need to submit to a higher God.", s: { Razorbeard: 1 } },
+            { t: "Let them tear the place apart; I'm just taking the opportunity to grab the register cash and book a permanent vacation overseas.", s: { Sexson: 1 } },
+            { t: "Just toss the game into the middle of the crowd for them to figure out, and step out the back door to get some fresh air.", s: { Chillson: 1 } },
+            { t: "I'd probably just crouch down behind the counter and wait for it all to blow over so I don't get hurt; if anyone tries to take it from me, I'll give it to the strongest person.", s: { Beardshy: 1 } }
+        ]
+    },
+    {
+        q: "Mid-broadcast on the Weekly Sweat Stream, your primary audio feed completely cuts out and a mysterious, ominous countdown timer appears directly on screen. How do you respond?",
+        a: [
+            { t: "It's the jerk-off counter; I must finish when it hits zero.", s: { Sexson: 1 } },
+            { t: "This is a malevolent attack by the corrupt regime trying to silence my truthtelling; I'll flip out, breaking objects around me until the problem resolves.", s: { Razorbeard: 1 } },
+            { t: "I'd try to fix the audio issue hoping my dear cohost handles the situation, and then flip out if he doesn't.", s: { Beardson: 1 } },
+            { t: "Mute my end entirely, pull up a whiteboard on camera, and start breaking down something completely unrelated with statistical probability.", s: { Beardlee: 1 } },
+            { t: "Start frantically typing in the chat, apologizing profusely for the technical difficulties and begging people not to clip my panicked reaction.", s: { Beardshy: 1 } },
+            { t: "Take it as a sign to step away from the keyboard, stretch, and enjoy the unexpected peace and quiet.", s: { Chillson: 1 } }
+        ]
+    },
+    {
+        q: "You are trapped inside a rural barn that was just intentionally set on fire by an esoteric streamer undergoing a severe schizoaffective episode. How do you escape the flames?",
+        a: [
+            { t: "I'd lock into action and break out of the barn with my physical prowess.", s: { Beardson: 0.5, Razorbeard: 0.5 } },
+            { t: "I don't think I could control myself and would just freeze from the stress and danger, hoping he comes back to rescue me.", s: { Beardshy: 1 } },
+            { t: "It's time to unleash my dark arts to subdue both the flames and the crazy streamer.", s: { Beardlee: 1 } },
+            { t: "This is fine.", s: { Chillson: 1 } },
+            { t: "Realize this country is completely doomed, break through a window, and head straight to the international airport to start a new life.", s: { Sexson: 1 } }
+        ]
+    },
+    {
+        q: "You find out about the America First United Event in Columbus, Ohio—they are mysteriously trying to do America First without NJF. What's your plan against this?",
+        a: [
+            { t: "I'd call them out on it, cover the stream, and make fun of them, annihilating their public perception with bearded precision.", s: { Beardson: 1 } },
+            { t: "I'd attend to find the host Amy Fictionalfield and engage in obviously consensual sexual activities with her.", s: { Razorbeard: 0.5, Sexson: 0.5 } },
+            { t: "I'd markup and sell them junk technical equipment and AI-generated branding, as they clearly don't know what they are doing.", s: { Beardlee: 1 } },
+            { t: "I'd attend as a red-pilled normie to talk about the globalists and the weather, then send information about the event back to people more important than me.", s: { Chillson: 1 } },
+            { t: "I wouldn't really understand what's going on, would support Queen Amy, and then be really embarrassed when everyone starts exposing them, ouch!", s: { Beardshy: 1 } }
+        ]
+    },
+    {
+        q: "You are watching a stream and suddenly notice Karasu casually chatting in the livechat. What do you do in response to his presence?",
+        a: [
+            { t: "Get him banned then forget about it.", s: { Beardlee: 1 } },
+            { t: "I can't stop myself from viciously insulting him for his incomprehensible blabbering.", s: { Beardson: 0.5, Razorbeard: 0.5 } },
+            { t: "Ignore him.", s: { Chillson: 1 } },
+            { t: "Engage in conversation, and be genuinely a nice person to him.", s: { Chillson: 0.5, Beardshy: 0.5 } },
+            { t: "Provoke him into typing essays, then just leave.", s: { Razorbeard: 1 } },
+            { t: "Try to get him to fuck the neighboring lady, and get him to record it.", s: { Sexson: 1 } }
+        ]
+    },
+    {
+        q: "You are forced to mingle at an upscale cocktail party populated entirely by conventional normies who only want to talk about the weather and mainstream media narratives. How do you survive the agonizing small talk?",
+        a: [
+            { t: "I hide my power level and talk about conventional topics.", s: { Beardson: 0.5, Chillson: 0.5 } },
+            { t: "Be the life of the party by yelling about the corrupt regime and your faith, pushing everyone to like you or submit due to your powerful personality.", s: { Razorbeard: 1 } },
+            { t: "I practice my opening lines the day before and then hit on as many girls as I can.", s: { Sexson: 1 } },
+            { t: "I'd just find a corner to stand in with my drink, hoping social interaction evades me.", s: { Beardshy: 1 } },
+            { t: "I'll try to talk to them and figure out if I can make any useful connections, and if not, I'll just leave the conversation.", s: { Beardlee: 1 } }
+        ]
+    },
+    {
+        q: "You travel to an anticipated community meetup, but you arrive to find that only Bob the Groyper attended. What do you do now?",
+        a: [
+            { t: "I'll try to share his enthusiasm and talk about mutual topics, even if I find him a bit annoying.", s: { Beardshy: 0.5, Chillson: 0.5 } },
+            { t: "I'll try to think of the most stupid or degenerate thing I could coerce him into doing and then execute it.", s: { Razorbeard: 1 } },
+            { t: "I'd use his naivety to run errands for me, saying it's very important for the movement.", s: { Beardlee: 1 } },
+            { t: "He's like an exotic pet I can use to keep the hoes entertained, but if he scares them, then he's got to go.", s: { Sexson: 1 } },
+            { t: "I'd pretend not to know him and leave, hoping he doesn't dox my location.", s: { Beardson: 1 } }
+        ]
+    },
+    {
+        q: "The ACP, led by Haz Al Din, goes on the offensive by openly disparaging your faction's ideology and calling your entire community a joke on a live broadcast. What is your retort?",
+        a: [
+            { t: "A small fry like that? I'll let Jimbo handle him.", s: { Beardson: 0.5, Chillson: 0.5 } },
+            { t: "I'd trick him that I am useful to the ACP, only to spread misinformation and misery, and monetize his outrage on X.", s: { Beardlee: 1 } },
+            { t: "Crash his broadcast with my DDoS legion and engage him in a raw physical confrontation to prove he's a weak manlet.", s: { Razorbeard: 1 } },
+            { t: "I'd probably just tweet out a really long apology thread and hope everyone forgets about it.", s: { Beardshy: 1 } },
+            { t: "I'd just send him a picture of me and two local girls at the beach and turn my phone off.", s: { Sexson: 1 } }
+        ]
+    },
+    {
+        q: "You are trying to enjoy a quiet evening, but a relentless esoteric programmer keeps messaging you, threatening to sacrifice your hairline to the Norwood Reaper if you refuse to debate him. How do you react?",
+        a: [
+            { t: "Too late, hairline gone.", s: { Beardson: 1 } },
+            { t: "My hairline is protected by esoteric means; the Norwood Reaper has no power over me.", s: { Beardlee: 1 } },
+            { t: "Send him a chaotic audio message screaming about the Epstein regime until he gets scared and backs off.", s: { Razorbeard: 1 } },
+            { t: "Turn off my phone and go for a walk—hair is just temporary anyway, man.", s: { Chillson: 1 } },
+            { t: "I'd get genuinely terrified and agree to the debate just so he doesn't actually curse me.", s: { Beardshy: 1 } },
+            { t: "This would be very problematic for my sex life, so I'd get the debate over ASAP to keep my hairline.", s: { Sexson: 1 } }
+        ]
+    },
+    {
+        q: "Murder Babe successfully tracks your exact coordinates and suddenly appears right outside your streaming setup during a critical live broadcast. How do you secure the perimeter and manage the crisis?",
+        a: [
+            { t: "Good thing Kentucky is a Stand Your Ground state.", s: { Beardson: 1 } },
+            { t: "I aggressively confront her with my huge cock, either breaking her or adding her to my harem.", s: { Razorbeard: 0.5, Sexson: 0.5 } },
+            { t: "I find somewhere to hide and be really embarrassed about it.", s: { Beardshy: 1 } },
+            { t: "I manipulate her into doing my bidding, employing her as unpaid labor with the hope of getting close to me.", s: { Beardlee: 1 } },
+            { t: "She'll just find an empty house, because I've hit the road to be as free as a bird.", s: { Chillson: 1 } },
+            { t: "It sounds too dangerous; I'd just call the cops to handle her.", s: { Beardson: 0.5, Beardshy: 0.5 } }
+        ]
+    },
+    {
+        q: "The Daily Mail employs a new debate-rookie named Matt Nuclear, who sports mushroom-shaped hair and is fiercely anti-groyper. How do you deal with him?",
+        a: [
+            { t: "Provoke him into a debate on his stream, expose his Grok chat, and eventually frog the fuck out.", s: { Beardson: 1 } },
+            { t: "I'd show up in his chat to support the young black representation streamer, even if he has a low view count.", s: { Beardshy: 1 } },
+            { t: "Compliment his debate tactics in public, then privately manipulate his chat moderators into turning against him and nuke his Discord.", s: { Beardlee: 1 } },
+            { t: "Don't bother doing anything; life's too short to waste energy on debate rookies.", s: { Chillson: 1 } },
+            { t: "I don't think this affects my sex life at all.", s: { Sexson: 1 } },
+            { t: "Call in every time he goes live using a fresh account to yell slurs and anti-system slogans until he stops streaming or I get banned.", s: { Razorbeard: 1 } }
+        ]
+    },
+    {
+        q: "The internet is completely down across the entire Jimboverse, meaning absolutely no Twitter, no Weekly Sweat Stream, and no digital drama to consume. What do you do with the overwhelming silence?",
+        a: [
+            { t: "Do whatever I feel like, from booting up retro games on my PS2 using a CRT to hanging out at the bar for a few beers.", s: { Beardson: 1 } },
+            { t: "I'd hit the most degenerate place I know of.", s: { Razorbeard: 0.5, Sexson: 0.5 } },
+            { t: "I'd just do whatever makes sense, man.", s: { Chillson: 1 } },
+            { t: "I'd prepare for the next time the internet comes back on instead.", s: { Beardlee: 1 } },
+            { t: "I'd read a good book, maybe educate myself on some topics.", s: { Beardlee: 0.5, Beardshy: 0.5 } },
+            { t: "Just curl up in a ball and rot in my room.", s: { Beardshy: 1 } }
+        ]
+    },
+    {
+        q: "A gigantic spider appears on your porch, threatening your way of life. It seems it has been commanded by Wurzelroot, and he explicitly wants you to take a picture of it. What is your move?",
+        a: [
+            { t: "Crash out on Wurzelfuck for being a bad friend, then kill off the monster spider after a tough battle.", s: { Beardson: 1 } },
+            { t: "Go live with a GoPro and rush out to devour the spider live.", s: { Razorbeard: 1 } },
+            { t: "It's way too scary; I'd just try to avoid it for the rest of my life, hoping it goes away or dies off.", s: { Beardshy: 1 } },
+            { t: "It's just a spider, we can coexist.", s: { Chillson: 1 } },
+            { t: "Spider Soup.", s: { Beardlee: 1 } },
+            { t: "Think about whether getting rid of it or keeping it will benefit your sex life, then act accordingly.", s: { Sexson: 1 } }
+        ]
+    },
+    {
+        q: "Your absolute favorite streamer goes live, but at that exact same moment, Vickylucy goes live as well. How will you respond to this scheduling conflict?",
+        a: [
+            { t: "I am my own favorite streamer.", s: { Beardson: 1 } },
+            { t: "I'd try to pull up both and give both streamers an equal amount of my time, support, and respect.", s: { Beardshy: 1 } },
+            { t: "Close the first stream to jerk my shit to Vickylucy.", s: { Sexson: 1 } },
+            { t: "Close Vickylucy to jerk my shit to my favorite streamer.", s: { Razorbeard: 1 } },
+            { t: "Just pull up whichever one has the most relaxed vibes right now and zone out.", s: { Chillson: 1 } },
+            { t: "Close both streams and watch an obscure foreign film instead.", s: { Beardlee: 1 } }
+        ]
+    },
+    {
+        q: "The one and only Paducah Comic-Con 2011 is happening soon. What highly specific cosplay will you put together to attend the event in?",
+        a: [
+            { t: "Reluctantly agree to be the dwarf to Brittany's centaur, then get crowned king and queen of the event.", s: { Beardson: 1 } },
+            { t: "I arrive in my normal attire, and everyone's jaw drops thinking I'm some cool character.", s: { Razorbeard: 0.5, Beardlee: 0.5 } },
+            { t: "I'd be too embarrassed to do cosplay, but if some of my friends would co-cosplay with me, I'd do it.", s: { Beardshy: 1 } },
+            { t: "No outfit; I'm the creep who ogles the cosplay girls.", s: { Sexson: 1 } },
+            { t: "I'd just do whatever makes sense, man.", s: { Chillson: 1 } }
+        ]
+    },
+    {
+        q: "Gaming is becoming predominantly ruled by women and transgenders, and video game journalists keep giving them glowing positive reviews. How do you navigate this shifting landscape?",
+        a: [
+            { t: "Remind everyone in public posts that you hate feminists, SJWs, and diversity quotas, and want them out of the gaming industry to achieve ethics in gaming journalism.", s: { Beardson: 1 } },
+            { t: "I'd infiltrate the gaming industry to get into the panties of the new devs and journalists.", s: { Sexson: 1 } },
+            { t: "Who the fuck cares about video games? I cum, fuck, and pray every day.", s: { Razorbeard: 1 } },
+            { t: "I'm happy there is diversity and equity in the gaming industry, hoping it won't affect my childhood favorite franchise.", s: { Beardshy: 1 } },
+            { t: "Chinese video games are the future: big boobs, fat asses, no woke.", s: { Beardlee: 1 } },
+            { t: "Keep playing games, not even noticing or being bothered about it.", s: { Chillson: 1 } }
+        ]
+    },
+    {
+        q: "A veteran coder offers to permanently erase your embarrassing internet footprint and all past controversies, but only on the condition that you swear unwavering loyalty to his dark esoteric religion. Do you take the shortcut?",
+        a: [
+            { t: "My past has made me who I am; in fact, I might just need more controversies to amass more followers and become even more powerful.", s: { Beardson: 1 } },
+            { t: "Join the dark esoteric religion without the footprint erasure, fuck yes.", s: { Razorbeard: 1 } },
+            { t: "This would be really useful, but the cult part is really scary and sounds like trouble, so I just wouldn't respond.", s: { Beardshy: 1 } },
+            { t: "Who cares what other people think? I'm just me.", s: { Chillson: 1 } },
+            { t: "I'd accept the erasure, but slip a loophole into the contract so I end up extracting a favor from his cult down the line.", s: { Beardlee: 1 } },
+            { t: "I'm already living under a fake name in Cebu; what do I care about an internet footprint?", s: { Sexson: 1 } }
+        ]
+    },
+    {
+        q: "By total accident, you find out about a friendly user's dox, and you realize it would be really funny to casually drop it in chat. Do you actually do it?",
+        a: [
+            { t: "I would never stoop to the level of doxing a user; only horrible friends do that.", s: { Beardson: 1 } },
+            { t: "I'll turn up to their house myself to vandalize their home and bully them.", s: { Razorbeard: 1 } },
+            { t: "I'd just chill and try to forget about it.", s: { Chillson: 1 } },
+            { t: "Blackmail them to do my bidding.", s: { Beardlee: 1 } },
+            { t: "No, no, no... that's way too much responsibility for me! I'd warn him to be more careful!", s: { Beardshy: 1 } },
+            { t: "I'd ask if they want to hook up.", s: { Sexson: 1 } }
+        ]
+    },
+    {
+        q: "You are holding a bar of Xanax, and Jordan Peterson is ready to trade a copy of his book 12 Rules for Life and, of course, his daughter Mikhaila for it. Do you accept the trade?",
+        a: [
+            { t: "That's way too unethical and unbelievably evil! I'd refuse and try to convince Mr. Peterson to go to rehab!", s: { Beardshy: 1 } },
+            { t: "I'd just share the bar with him without a second thought or processing the trade.", s: { Chillson: 1 } },
+            { t: "It's a fine trade; I'll take it before he reconsiders.", s: { Beardlee: 0.5, Sexson: 0.5 } },
+            { t: "Pop the Xanax right in front of him, smash his book, smash Mikhaila, and scream at him to submit and repent.", s: { Razorbeard: 1 } },
+            { t: "Keep the bar for myself and tell Peterson to fix his own life before trying to trade.", s: { Beardson: 1 } }
+        ]
+    }
+];
+
+let currentQuestion = 0;
+let winningPersona = "";
+
+function startQuiz() {
+    document.getElementById("start-container").style.display = "none";
+    document.getElementById("quiz-container").style.display = "block";
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const qData = questions[currentQuestion];
+    document.getElementById("progress-text").innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
+    document.getElementById("question-text").innerText = qData.q;
+    
+    const choicesContainer = document.getElementById("choices-container");
+    choicesContainer.innerHTML = "";
+
+    qData.a.forEach((choice) => {
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.innerText = choice.t;
+        btn.onclick = () => selectAnswer(choice.s);
+        choicesContainer.appendChild(btn);
+    });
+}
+
+function selectAnswer(scoreObject) {
+    for (let persona in scoreObject) {
+        if (points[persona] !== undefined) {
+            points[persona] += scoreObject[persona];
+        }
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById("quiz-container").style.display = "none";
+    document.getElementById("result-container").style.display = "block";
+
+    let maxScore = -1;
+    let topTies = [];
+
+    for (let persona in points) {
+        if (points[persona] > maxScore) {
+            maxScore = points[persona];
+            topTies = [persona];
+        } else if (points[persona] === maxScore) {
+            topTies.push(persona);
+        }
+    }
+
+    const randomIndex = Math.floor(Math.random() * topTies.length);
+    winningPersona = topTies[randomIndex];
+
+    const data = resultsData[winningPersona];
+    
+    document.getElementById("result-image").src = data.image;
+    document.getElementById("result-title").innerText = `Your Beardson Alter Ego is: ${winningPersona}`;
+    document.getElementById("result-who").innerText = data.who;
+    document.getElementById("result-why").innerText = data.why;
+
+    renderHexGraph();
+}
+
+function renderHexGraph() {
+    const container = document.getElementById("hex-graph-container");
+    container.innerHTML = "";
+
+    const orderedPersonas = ["Beardson", "Razorbeard", "Sexson", "Chillson", "Beardlee", "Beardshy"];
+    
+    const size = 360;
+    const center = size / 2;
+    const radius = 120;
+
+    const maxVal = Math.max(1, ...Object.values(points));
+
+    const getVertexCoordinates = (r) => {
+        let coords = [];
+        for (let i = 0; i < 6; i++) {
+            const angle = (i * Math.PI) / 3 - Math.PI / 2;
+            coords.push({
+                x: center + r * Math.cos(angle),
+                y: center + r * Math.sin(angle)
+            });
+        }
+        return coords;
+    };
+
+    const outerVertices = getVertexCoordinates(radius);
+
+    let svgHTML = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+
+    [0.25, 0.5, 0.75, 1].forEach(scale => {
+        const polyVerts = getVertexCoordinates(radius * scale);
+        const pointsStr = polyVerts.map(v => `${v.x},${v.y}`).join(" ");
+        svgHTML += `<polygon points="${pointsStr}" fill="none" stroke="#e0e0e0" stroke-width="1" />`;
+    });
+
+    outerVertices.forEach((v, i) => {
+        const pName = orderedPersonas[i];
+        const color = personaColors[pName];
+        svgHTML += `<line x1="${center}" y1="${center}" x2="${v.x}" y2="${v.y}" stroke="${color}" stroke-width="2" opacity="0.6"/>`;
+    });
+
+    let userPoints = [];
+    orderedPersonas.forEach((pName, i) => {
+        const score = points[pName] || 0;
+        const scoreRatio = Math.min(1, score / maxVal);
+        const angle = (i * Math.PI) / 3 - Math.PI / 2;
+        const r = radius * scoreRatio;
+        userPoints.push({
+            x: center + r * Math.cos(angle),
+            y: center + r * Math.sin(angle)
+        });
+    });
+
+    const userPointsStr = userPoints.map(v => `${v.x},${v.y}`).join(" ");
+    svgHTML += `<polygon points="${userPointsStr}" fill="rgba(52, 152, 219, 0.4)" stroke="#2980b9" stroke-width="2" />`;
+
+    userPoints.forEach(v => {
+        svgHTML += `<circle cx="${v.x}" cy="${v.y}" r="4" fill="#2c3e50" />`;
+    });
+
+    svgHTML += `</svg>`;
+    container.innerHTML = svgHTML;
+
+    outerVertices.forEach((v, i) => {
+        const pName = orderedPersonas[i];
+        const imgPath = resultsData[pName].image;
+        const borderColor = personaColors[pName];
+
+        const img = document.createElement("img");
+        img.src = imgPath;
+        img.className = "hex-corner-avatar";
+        img.style.left = `${v.x}px`;
+        img.style.top = `${v.y}px`;
+        img.style.borderColor = borderColor;
+        img.title = `${pName}: ${points[pName]} pts`;
+        
+        container.appendChild(img);
+    });
+}
+
+// Helper to load external images securely onto canvas avoiding CORS taint
+function loadImg(url) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = url;
+    });
+}
+
+async function generateShareCardDataURL() {
+    const canvas = document.getElementById("share-canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Clear canvas with white background
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 1. Draw Header Text
+    ctx.fillStyle = "#2c3e50";
+    ctx.font = "bold 32px 'Segoe UI', Tahoma, sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText(`Your Beardson Alter Ego is: ${winningPersona}`, 40, 65);
+
+    // 2. Draw Result Avatar Image (Left side)
+    const resultImgObj = await loadImg(resultsData[winningPersona].image);
+    const avatarX = 40;
+    const avatarY = 100;
+    const avatarSize = 320;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(avatarX, avatarY, avatarSize, avatarSize, 16);
+    ctx.clip();
+    if (resultImgObj) {
+        ctx.drawImage(resultImgObj, avatarX, avatarY, avatarSize, avatarSize);
+    } else {
+        ctx.fillStyle = "#ecf0f1";
+        ctx.fillRect(avatarX, avatarY, avatarSize, avatarSize);
+    }
+    ctx.restore();
+
+    // Add border / shadow effect to avatar box
+    ctx.strokeStyle = "#dcdde1";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(avatarX, avatarY, avatarSize, avatarSize, 16);
+    ctx.stroke();
+
+    // 3. Draw Hex Graph (Right side)
+    const graphCenterX = 600;
+    const graphCenterY = 260;
+    const radius = 110;
+    const orderedPersonas = ["Beardson", "Razorbeard", "Sexson", "Chillson", "Beardlee", "Beardshy"];
+    const maxVal = Math.max(1, ...Object.values(points));
+
+    const getVerts = (r) => {
+        let coords = [];
+        for (let i = 0; i < 6; i++) {
+            const angle = (i * Math.PI) / 3 - Math.PI / 2;
+            coords.push({
+                x: graphCenterX + r * Math.cos(angle),
+                y: graphCenterY + r * Math.sin(angle)
+            });
+        }
+        return coords;
+    };
+
+    // Draw concentric polygon grid lines
+    [0.25, 0.5, 0.75, 1].forEach(scale => {
+        const polyVerts = getVerts(radius * scale);
+        ctx.beginPath();
+        polyVerts.forEach((v, idx) => {
+            if (idx === 0) ctx.moveTo(v.x, v.y);
+            else ctx.lineTo(v.x, v.y);
+        });
+        ctx.closePath();
+        ctx.strokeStyle = "#e0e0e0";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    });
+
+    // Draw axis lines
+    const outerVerts = getVerts(radius);
+    outerVerts.forEach((v, i) => {
+        const color = personaColors[orderedPersonas[i]];
+        ctx.beginPath();
+        ctx.moveTo(graphCenterX, graphCenterY);
+        ctx.lineTo(v.x, v.y);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.globalAlpha = 0.6;
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+    });
+
+    // Draw user score polygon fill
+    let userVerts = [];
+    orderedPersonas.forEach((pName, i) => {
+        const score = points[pName] || 0;
+        const scoreRatio = Math.min(1, score / maxVal);
+        const angle = (i * Math.PI) / 3 - Math.PI / 2;
+        const r = radius * scoreRatio;
+        userVerts.push({
+            x: graphCenterX + r * Math.cos(angle),
+            y: graphCenterY + r * Math.sin(angle)
+        });
+    });
+
+    ctx.beginPath();
+    userVerts.forEach((v, idx) => {
+        if (idx === 0) ctx.moveTo(v.x, v.y);
+        else ctx.lineTo(v.x, v.y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = "rgba(52, 152, 219, 0.4)";
+    ctx.fill();
+    ctx.strokeStyle = "#2980b9";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Draw user vertex dots
+    userVerts.forEach(v => {
+        ctx.beginPath();
+        ctx.arc(v.x, v.y, 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#2c3e50";
+        ctx.fill();
+    });
+
+    // 4. Draw Corner Avatars around the graph on canvas
+    for (let i = 0; i < 6; i++) {
+        const pName = orderedPersonas[i];
+        const v = outerVerts[i];
+        const borderColor = personaColors[pName];
+        
+        const cornerImg = await loadImg(resultsData[pName].image);
+        const iconSize = 36;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(v.x, v.y, iconSize / 2, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.clip();
+
+        if (cornerImg) {
+            ctx.drawImage(cornerImg, v.x - iconSize/2, v.y - iconSize/2, iconSize, iconSize);
+        } else {
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(v.x - iconSize/2, v.y - iconSize/2, iconSize, iconSize);
+        }
+        ctx.restore();
+
+        ctx.beginPath();
+        ctx.arc(v.x, v.y, iconSize / 2, 0, 2 * Math.PI);
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+
+    return canvas.toDataURL("image/png");
+}
+
+async function downloadResultCard() {
+    const statusDiv = document.getElementById("share-status");
+    statusDiv.innerText = "Generating your image card...";
+
+    try {
+        const dataUrl = await generateShareCardDataURL();
+        const link = document.createElement('a');
+        link.download = 'my-jimboverse-result.png';
+        link.href = dataUrl;
+        link.click();
+        statusDiv.innerText = "Card downloaded successfully! Now click share on X and attach it.";
+    } catch (e) {
+        console.error(e);
+        statusDiv.innerText = "Could not generate image due to security restrictions.";
+    }
+}
+
+async function shareOnX() {
+    const statusDiv = document.getElementById("share-status");
+    statusDiv.innerText = "Opening X intent...";
+
+    try {
+        let cleanUrl = window.location.href;
+        if (cleanUrl.startsWith("file:///")) {
+            cleanUrl = "https://jimboverse.fandom.com/";
+        } else {
+            cleanUrl = cleanUrl.split('#')[0];
+        }
+
+        let textToShare = `My Beardson Alter Ego is ${winningPersona}! Take the Jimboverse test to find yours:`;
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}&url=${encodeURIComponent(cleanUrl)}`;
+        
+        window.open(twitterUrl, '_blank');
+        statusDiv.innerText = "Remember to attach your downloaded image to your X post!";
+    } catch (e) {
+        console.error(e);
+        statusDiv.innerText = "Could not open Twitter intent.";
+    }
+}
+</script>
+
+</body>
+</html>
