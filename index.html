@@ -11,22 +11,36 @@
     <meta name="twitter:description" id="meta-desc" content="Take the quiz to find out your Jimboverse alter ego and personality breakdown!">
     <meta name="twitter:image" id="meta-image" content="https://static.wikia.nocookie.net/jimboverse/images/2/24/Sexson_Patly.png/revision/latest?cb=20260423223453">
 
-   <style>
+ <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: url('https://static.wikia.nocookie.net/jimboverse/images/b/b5/Site-background-light/revision/latest?cb=20260412212733');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
             color: #333;
             line-height: 1.6;
             min-height: 100vh;
-            margin: 0;
             padding: 40px 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            box-sizing: border-box;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('https://static.wikia.nocookie.net/jimboverse/images/b/b5/Site-background-light/revision/latest?cb=20260412212733&format=original');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
         }
         .container {
             background: #fff;
@@ -36,6 +50,8 @@
             width: 100%;
             max-width: 800px;
             box-sizing: border-box;
+            position: relative;
+            z-index: 1;
         }
         h1, h2, h3 {
             color: #2c3e50;
